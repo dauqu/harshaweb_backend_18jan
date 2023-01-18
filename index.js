@@ -35,6 +35,7 @@ const allowedOrigins = [
   "http://192.168.1.100:3000",
   "http://192.168.1.102:3000",
   "https://harshaweb.com",
+  "https://harshaweb-frontend-18jan.vercel.app"
 ];
 
 app.use(
