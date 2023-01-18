@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const PORT = 4000;
+const PORT = 4001;
 const multer = require("multer");
 const cookieParser = require("cookie-parser");
 
@@ -123,6 +123,6 @@ app.use("/api/payment_id_status_web", require("./routes/payment_id_status_web"))
 // gender selection
 // app.use("/api/genderSelection", require("./routes/genderSelection"));
 
-app.listen(4000, () => {
-  console.log(`server is running on http://localhost:4000`);
+app.listen(PORT, () => {
+  console.log(`server is running on ${PORT}`);
 });
