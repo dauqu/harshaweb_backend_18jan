@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const PORT = 4001;
+const PORT = process.env.PORT || 4001;
 const multer = require("multer");
 const cookieParser = require("cookie-parser");
 
