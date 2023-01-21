@@ -9,53 +9,56 @@ const UserSchema = require("./../models/User");
 
 router.use(cookiParser());
 
+// code to login user
 router.post("/", async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        // console.log(req.body)
-        const admin_collection = await User.findOne({ email }).lean();
-        if (!admin_collection)
-            return res.status(400).json({ message: "email is wrong ", status: "warning" });
+  const { email, password } = req.body;
 
-        // const hash_psw = admin_collection.password;
-        // console.log(admin_collection.password)
-        
-         const valid_password = bcrypt.compare(password, admin_collection.password);
-         
-         if(!valid_password)
-            return res.status(400).json({ message: "  passord is wrong ", status: "warning" });
+  try {
+    let user = await User.findOne({ email });
 
-
-        // token
-        const token = jwt.sign({
-            id: admin_collection._id,
-            email: admin_collection.email
-        }, 
-        process.env.JWT_SECRET,{
-            algorithm: "HS256",
-        })
-
-        // cookies
-        res.cookie("auth_token", token, {
-            httpOnly: true,
-            maxAge: 1000 * 60 * 60 * 24 * 30,
-            sameSite: "none",
-            secure: true,
-        })
-
-
-        res.status(200).json({ message: "login success", status: "success", token: token });
-
-    } catch (error) {
-        res.status(500).json({ message: error.message, status: "error" })
+    if (!user) {
+      return res.status(400).json({ msg: "Email not found" });
     }
-})
 
+    const isMatch = await bcrypt.compare(password, user.password);
 
-// check valid token 
+    if (!isMatch) {
+      return res.status(400).json({ msg: "Invalid Password" });
+    }
+
+    const payload = {
+      user: {
+        id: user.id,
+        email: user.email,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      { expiresIn: 360000 },
+      (err, token) => {
+        if (err) throw err;
+        res.cookie("auth_token", token, {
+          httpOnly: true,
+          sameSite: "none",
+          secure: true,
+        });
+
+        res.status(200).json({  msg: "login success", token ,user });
+      }
+    );
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// check valid token
 router.get("/check_valid_token", async (req, res) => {
-    //Check user have token or not
-  const token = req.cookies.auth_token || req.body.token || req.headers["x-auth-token"];
+  //Check user have token or not
+  const token =
+    req.cookies.auth_token || req.body.token || req.headers["x-auth-token"];
 
   if (token == undefined || token == null || token == "") {
     return res.json(false);
@@ -79,27 +82,26 @@ router.get("/check_valid_token", async (req, res) => {
   }
 });
 
-// check token id is same with user id 
+// check token id is same with user id
 router.get("/checkLogin", (req, res) => {
-    try {
-        const have_valid_token = jwt.verify(
-            req.cookies.token,
-            process.env.JWT_SECRET
-        )
-        // get user id from token 
-        const id_from_token = have_valid_token.id;
+  try {
+    const have_valid_token = jwt.verify(
+      req.cookies.token,
+      process.env.JWT_SECRET
+    );
+    // get user id from token
+    const id_from_token = have_valid_token.id;
 
-        // check same id have same database
-        const user_id = User.findById(id_from_token);
-        if (user_id == undefined) {
-            res.json(false)
-        }
-        else {
-            res.json(true)
-        }
-    } catch (error) {
-        res.json(false)
+    // check same id have same database
+    const user_id = User.findById(id_from_token);
+    if (user_id == undefined) {
+      res.json(false);
+    } else {
+      res.json(true);
     }
-})
+  } catch (error) {
+    res.json(false);
+  }
+});
 
 module.exports = router;

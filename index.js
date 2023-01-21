@@ -52,7 +52,7 @@ app.use("/api/GetUser", require("./routes/user_register"));
 app.use("/api/signup", require("./routes/user_register"));
 
 // login api
-app.use("/api/login", require("./routes/login"));
+// app.use("/api/login", require("./routes/login"));
 
 // logout api
 app.use("/api/logout", require("./routes/logout")); 
