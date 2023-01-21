@@ -33,7 +33,8 @@ const allowedOrigins = [
   "https://harshaweb.com",
   "https://harshaweb-frontend-18jan.vercel.app",
   "https://harshawebbackend18jan-production.up.railway.app",
-  "https://harsha-web-dashboard-admin.vercel.app"
+  "https://harsha-web-dashboard-admin.vercel.app",
+  "https://api.harshaweb.com"
 ];
 
 app.use(
