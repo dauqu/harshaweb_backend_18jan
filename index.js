@@ -32,7 +32,8 @@ const allowedOrigins = [
   "http://localhost:4000",
   "https://harshaweb.com",
   "https://harshaweb-frontend-18jan.vercel.app",
-  "https://harshawebbackend18jan-production.up.railway.app"
+  "https://harshawebbackend18jan-production.up.railway.app",
+  "https://harsha-web-dashboard-admin.vercel.app"
 ];
 
 app.use(
@@ -110,7 +111,6 @@ app.use("/api/payment_id_status_app", require("./routes/payment_id_status_app"))
 
 //payment id and status
 app.use("/api/payment_id_status_web", require("./routes/payment_id_status_web"));
-
 
 // vendor signup
 // app.use("/api/vendor_signup", require("./routes/Vendor_register"));
