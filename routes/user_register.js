@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-//  getting user by id from database 
+//  getting user by id from database
 router.get("/:id", async (req, res) => {
   try {
     const user_collection = await user.findById(req.params.id);
@@ -41,8 +41,40 @@ router.patch("/update/:id", async (req, res) => {
   }
 });
 
+// code to update user by getting id
+router.patch("/updateUser/:id", async (req, res) => {
+  try {
+    const user_collection = await user.findById(req.params.id);
+    if (user_collection == null) {
+      return res.status(404).json({ message: "user not found" });
+    }
+    if (req.body.name != null) {
+      user_collection.name = req.body.name;
+    }
+    if (req.body.username != null) {
+      user_collection.username = req.body.username;
+    }
+    if (req.body.phone != null) {
+      user_collection.phone = req.body.phone;
+    }
+    if (req.body.address != null) {
+      user_collection.address = req.body.address;
+    }
+    if (req.body.email != null) {
+      user_collection.email = req.body.email;
+    }
+    if (req.body.age != null) {
+      user_collection.age = req.body.age;
+    }
+    const updatedUser = await user_collection.save();
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message, status: "error" });
+  }
+});
+
 // create user
-router.post("/",SignupValidation,   async (req, res) => {
+router.post("/", SignupValidation, async (req, res) => {
   console.log(req.body);
 
   // hashing password
@@ -109,12 +141,10 @@ async function SignupValidation(req, res, next) {
     const age = req.body.age;
     const min_age = 18;
     if (age < min_age)
-      return res
-        .status(400)
-        .json({
-          message: "You are not eligible because of your age is less than 18",
-          status: "error",
-        });
+      return res.status(400).json({
+        message: "You are not eligible because of your age is less than 18",
+        status: "error",
+      });
   }
 
   next();

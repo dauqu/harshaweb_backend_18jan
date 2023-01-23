@@ -29,6 +29,7 @@ app.get("/", (req, res) => {
 //Loop of allowed origins
 const allowedOrigins = [
   "http://localhost:3000",
+  "http://localhost:3001",
   "http://localhost:4000",
   "https://harshaweb.com",
   "https://harshaweb-frontend-18jan.vercel.app",
