@@ -16,10 +16,9 @@ const wsServer = new webSocketServer({
   httpServer: server,
 });
 
-
 app.use(cookieParser());
-app.use(express.static(__dirname+"/medias_web"));
-app.use(express.static(__dirname+"/medias_app"));
+app.use(express.static(__dirname + "/medias_web"));
+app.use(express.static(__dirname + "/medias_app"));
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -32,10 +31,11 @@ const allowedOrigins = [
   "http://localhost:3001",
   "http://localhost:4000",
   "https://harshaweb.com",
+  "https://harsh-w.vercel.app",
   "https://harshaweb-frontend-18jan.vercel.app",
   "https://harshawebbackend18jan-production.up.railway.app",
   "https://harsha-web-dashboard-admin.vercel.app",
-  "https://api.harshaweb.com"
+  "https://api.harshaweb.com",
 ];
 
 app.use(
@@ -58,7 +58,7 @@ app.use("/api/signup", require("./routes/user_register"));
 // app.use("/api/login", require("./routes/login"));
 
 // logout api
-app.use("/api/logout", require("./routes/logout")); 
+app.use("/api/logout", require("./routes/logout"));
 
 // Profile req and res
 app.use("/api/admin_profile", require("./Profile/Adminprofile"));
@@ -77,7 +77,7 @@ app.use("/api/stripepayment", require("./routes/StripePayment"));
 
 // User Register
 app.use("/api/new_user_register", require("./routes/user_register"));
- 
+
 // User Login
 app.use("/api/user_login", require("./routes/User_login_new"));
 
@@ -85,7 +85,7 @@ app.use("/api/user_login", require("./routes/User_login_new"));
 app.use("/api/user_logout", require("./routes/User_logout"));
 
 //user_list
-app.use("/api/user_list", require("./Profile/User_list"))
+app.use("/api/user_list", require("./Profile/User_list"));
 
 //contact list
 app.use("/api/contact", require("./routes/contact"));
@@ -109,10 +109,16 @@ app.use("/api/payment_gateway_app", require("./routes/payment_gateway_app"));
 app.use("/api/payment_gateway_web", require("./routes/payment_gateway_web"));
 
 //payment id and status
-app.use("/api/payment_id_status_app", require("./routes/payment_id_status_app"));
+app.use(
+  "/api/payment_id_status_app",
+  require("./routes/payment_id_status_app")
+);
 
 //payment id and status
-app.use("/api/payment_id_status_web", require("./routes/payment_id_status_web"));
+app.use(
+  "/api/payment_id_status_web",
+  require("./routes/payment_id_status_web")
+);
 
 // vendor signup
 // app.use("/api/vendor_signup", require("./routes/Vendor_register"));
